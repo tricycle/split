@@ -221,6 +221,20 @@ describe Split::Experiment do
     end
   end
 
+  describe 'winner=' do
+    it "sets the corresponding value in the experiment_winner hash to the winning alternative name" do
+      expect { experiment.winner = 'red' }
+        .to change { Split.redis.hget(:experiment_winner, experiment.name) }
+        .from(nil)
+        .to('red')
+    end
+
+    it "calls the on_alternative_marked_as_winner hook" do
+      expect(Split.configuration.on_alternative_marked_as_winner).to receive(:call)
+      experiment.winner = 'red'
+    end
+  end
+
   describe 'has_winner?' do
     context 'with winner' do
       before { experiment.winner = 'red' }

@@ -149,6 +149,7 @@ module Split
 
     def winner=(winner_name)
       redis.hset(:experiment_winner, name, winner_name.to_s)
+      Split.configuration.on_alternative_marked_as_winner.call(self)
     end
 
     def participant_count
