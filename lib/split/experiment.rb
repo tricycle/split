@@ -89,6 +89,7 @@ module Split
 
       redis.hset(experiment_config_key, :resettable, resettable)
       redis.hset(experiment_config_key, :algorithm, algorithm.to_s)
+      Split.configuration.on_experiment_save.call(self)
       self
     end
 
