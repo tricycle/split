@@ -13,6 +13,10 @@ describe Split::Configuration do
     expect(@config.on_alternative_marked_as_winner).to be_an_instance_of(Proc)
   end
 
+  it "should provide a default proc for on_experiment_save" do
+    expect(@config.on_experiment_save).to be_an_instance_of(Proc)
+  end
+
   it "should provide default values for db failover" do
     expect(@config.db_failover).to be_falsey
     expect(@config.db_failover_on_db_error).to be_a Proc

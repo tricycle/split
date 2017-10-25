@@ -20,6 +20,7 @@ module Split
     attr_accessor :on_trial_choose
     attr_accessor :on_trial_complete
     attr_accessor :on_alternative_marked_as_winner
+    attr_accessor :on_experiment_save
     attr_accessor :on_experiment_reset
     attr_accessor :on_experiment_delete
     attr_accessor :on_before_experiment_reset
@@ -201,6 +202,7 @@ module Split
       @db_failover = false
       @db_failover_on_db_error = proc{|error|} # e.g. use Rails logger here
       @on_alternative_marked_as_winner = proc{|experiment|}
+      @on_experiment_save = proc{|experiment|}
       @on_experiment_reset = proc{|experiment|}
       @on_experiment_delete = proc{|experiment|}
       @on_before_experiment_reset = proc{|experiment|}
