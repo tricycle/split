@@ -79,17 +79,21 @@ module Split
     def save
       validate!
 
+      configuration = Split.configuration
+
       if new_record?
-        start unless Split.configuration.start_manually
+        start unless configuration.start_manually
       elsif experiment_configuration_has_changed?
-        reset unless Split.configuration.reset_manually
+        reset unless configuration.reset_manually
       end
 
-      persist_experiment_configuration if new_record? || experiment_configuration_has_changed?
+      if new_record? || experiment_configuration_has_changed?
+        persist_experiment_configuration
+        configuration.on_experiment_save.call(self)
+      end
 
       redis.hset(experiment_config_key, :resettable, resettable)
       redis.hset(experiment_config_key, :algorithm, algorithm.to_s)
-      Split.configuration.on_experiment_save.call(self)
       self
     end
 
